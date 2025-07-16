@@ -1,7 +1,13 @@
-export function GetBubbleSortAnimations(array: number[]): { type: string, indices: number[]}[] {
+type Animation = {
+    type: 'compare' | 'overwrite';
+    indices: number[];
+    values?: number[];
+};
+
+export function GetBubbleSortAnimations(array: number[]): { type: string; indices: number[] }[] {
     let len = array.length;
     let flag: boolean;
-    const animations: Array<{type: string, indices: number[]}> = [];
+    const animations: Array<{ type: string; indices: number[] }> = [];
 
     do {
         flag = false;
@@ -15,14 +21,14 @@ export function GetBubbleSortAnimations(array: number[]): { type: string, indice
                 flag = true;
             }
         }
-        len--; 
+        len--;
     } while (flag);
 
     return animations;
 }
 
-export function GetSelectionSortAnimations(array: number[]): { type: string, indices: number[] }[] {
-    const animations: Array<{ type: string, indices: number[] }> = [];
+export function GetSelectionSortAnimations(array: number[]): { type: string; indices: number[] }[] {
+    const animations: Array<{ type: string; indices: number[] }> = [];
     const len = array.length;
 
     for (let i = 0; i < len; i++) {
@@ -45,16 +51,14 @@ export function GetSelectionSortAnimations(array: number[]): { type: string, ind
     return animations;
 }
 
-
-function swap(array : number[],xp: number, yp: number)
-{
+function swap(array: number[], xp: number, yp: number) {
     var temp = array[xp];
     array[xp] = array[yp];
     array[yp] = temp;
 }
 
-export function GetInsertionSortAnimations(array: number[]): { type: string, indices: number[] }[] {
-    const animations: Array<{ type: string, indices: number[] }> = [];
+export function GetInsertionSortAnimations(array: number[]): { type: string; indices: number[] }[] {
+    const animations: Array<{ type: string; indices: number[] }> = [];
 
     for (let i = 1; i < array.length; i++) {
         let key = array[i];
@@ -71,9 +75,14 @@ export function GetInsertionSortAnimations(array: number[]): { type: string, ind
     }
     return animations;
 }
-function partition(array: number[], low: number, high: number, animations: Array<{ type: string, indices: number[] }>): number {
-    const pivot = array[high];  
-    let i = low - 1;      
+function partition(
+    array: number[],
+    low: number,
+    high: number,
+    animations: Array<{ type: string; indices: number[] }>
+): number {
+    const pivot = array[high];
+    let i = low - 1;
 
     for (let j = low; j < high; j++) {
         animations.push({ type: 'compare', indices: [j, high] });
@@ -90,11 +99,10 @@ function partition(array: number[], low: number, high: number, animations: Array
     animations.push({ type: 'swap', indices: [i + 1, high] });
     [array[i + 1], array[high]] = [array[high], array[i + 1]];
 
-    return i + 1; 
+    return i + 1;
 }
 
-
-function quickSort(array: number[], low: number, high: number, animations: Array<{ type: string, indices: number[] }>) {
+function quickSort(array: number[], low: number, high: number, animations: Array<{ type: string; indices: number[] }>) {
     if (low < high) {
         const pi = partition(array, low, high, animations);
 
@@ -103,29 +111,13 @@ function quickSort(array: number[], low: number, high: number, animations: Array
     }
 }
 
-
-export function GetQuickSortAnimations(array: number[]): { type: string, indices: number[] }[] {
-    const animations: Array<{ type: string, indices: number[] }> = [];
+export function GetQuickSortAnimations(array: number[]): { type: string; indices: number[] }[] {
+    const animations: Array<{ type: string; indices: number[] }> = [];
     quickSort(array, 0, array.length - 1, animations);
     return animations;
 }
 
-
-
-
-type Animation = {
-    type: 'compare' | 'overwrite';
-    indices: number[];
-    values?: number[];
-};
-
-function merge(
-    arr: number[],
-    left: number,
-    mid: number,
-    right: number,
-    animations: Animation[]
-) {
+function merge(arr: number[], left: number, mid: number, right: number, animations: Animation[]) {
     const n1 = mid - left + 1;
     const n2 = right - mid;
 
@@ -201,8 +193,12 @@ export function GetMergeSortAnimations(
     return animations;
 }
 
-export function GetHeapSortAnimations(array: number[]): { type: string, indices: number[], values?: number[] }[] {
-    const animations: Array<{ type: string, indices: number[], values?: number[] }> = [];
+export function GetHeapSortAnimations(array: number[]): { type: string; indices: number[]; values?: number[] }[] {
+    const animations: Array<{
+        type: string;
+        indices: number[];
+        values?: number[];
+    }> = [];
     const n = array.length;
 
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
@@ -218,10 +214,15 @@ export function GetHeapSortAnimations(array: number[]): { type: string, indices:
     return animations;
 }
 
-function heapify(array: number[], n: number, i: number, animations: Array<{ type: string, indices: number[], values?: number[] }>) {
-    let largest = i; 
-    let l = 2 * i + 1; 
-    let r = 2 * i + 2; 
+function heapify(
+    array: number[],
+    n: number,
+    i: number,
+    animations: Array<{ type: string; indices: number[]; values?: number[] }>
+) {
+    let largest = i;
+    let l = 2 * i + 1;
+    let r = 2 * i + 2;
 
     if (l < n) {
         animations.push({ type: 'compare', indices: [l, largest] });
@@ -245,8 +246,12 @@ function heapify(array: number[], n: number, i: number, animations: Array<{ type
     }
 }
 
-export function GetGnomeSortAnimations(array: number[]): { type: string, indices: number[], values?: number[] }[] {
-    const animations: Array<{ type: string, indices: number[], values?: number[] }> = [];
+export function GetGnomeSortAnimations(array: number[]): { type: string; indices: number[]; values?: number[] }[] {
+    const animations: Array<{
+        type: string;
+        indices: number[];
+        values?: number[];
+    }> = [];
     let index = 0;
     const n = array.length;
 
@@ -255,7 +260,7 @@ export function GetGnomeSortAnimations(array: number[]): { type: string, indices
             index++;
         } else {
             animations.push({ type: 'compare', indices: [index, index - 1] });
-            
+
             if (array[index] >= array[index - 1]) {
                 index++;
             } else {
@@ -267,4 +272,61 @@ export function GetGnomeSortAnimations(array: number[]): { type: string, indices
     }
 
     return animations;
+}
+
+export function GetRadixSortAnimations(array: number[]): { type: string; indices: number[]; values?: number[] }[] {
+    const animations: Array<{
+        type: string;
+        indices: number[];
+        values?: number[];
+    }> = [];
+
+    const max = Math.max(...array);
+
+    for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+        countingSort(array, exp, animations);
+    }
+
+    return animations;
+}
+
+function countingSort(
+    array: number[],
+    exp: number,
+    animations: Array<{ type: string; indices: number[]; values?: number[] }>
+) {
+    const n = array.length;
+    const output = new Array(n);
+    const count = new Array(10).fill(0);
+
+    for (let i = 0; i < n; i++) {
+        const digit = Math.floor(array[i] / exp) % 10;
+        count[digit]++;
+        animations.push({ type: 'compare', indices: [i, i] });
+    }
+
+    for (let i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+
+    for (let i = n - 1; i >= 0; i--) {
+        const digit = Math.floor(array[i] / exp) % 10;
+        output[count[digit] - 1] = array[i];
+        count[digit]--;
+
+        animations.push({
+            type: 'overwrite',
+            indices: [count[digit]],
+            values: [array[i]],
+        });
+    }
+
+    for (let i = 0; i < n; i++) {
+        animations.push({
+            type: 'overwrite',
+            indices: [i],
+            values: [output[i]],
+        });
+        array[i] = output[i];
+    }
 }
