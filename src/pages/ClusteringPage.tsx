@@ -293,8 +293,8 @@ const ClusteringPage = () => {
                             }}
                             series={getChartSeries()}
                             type="scatter"
-                            height={700}
-                            width={900}
+                            height={500}
+                            width={600}
                         />
                     </div>
                 </div>
